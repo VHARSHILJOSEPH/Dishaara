@@ -1,0 +1,49 @@
+services:
+  # Frontend Service
+  - type: web
+    name: dishaara-frontend
+    env: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-XSS-Protection
+        value: "1; mode=block"
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://dishaara-backend.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  # Backend Service
+  - type: web
+    name: dishaara-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_CLIENT_EMAIL
+        sync: false
+      - key: FIREBASE_PRIVATE_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: AI_API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        value: https://dishaara-frontend.onrender.com
