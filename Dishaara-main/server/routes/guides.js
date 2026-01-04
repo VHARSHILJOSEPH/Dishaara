@@ -61,7 +61,7 @@ router.get('/', validatePagination, async (req, res) => {
 
     if (maxPrice) {
       guides = guides.filter(g => 
-        g.pricing?.hourlyRate && g.pricing.hourlyRate <= parseFloat(maxPrice)
+        g.pricing?.hourlyRate && g.pricing.hourlyRate <= parseFloat(maxPrice)iu
       );
     }
 
